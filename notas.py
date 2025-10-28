@@ -71,4 +71,3 @@ class ManejadorDeNotas:
             cursor.execute("DELETE FROM notas WHERE id = ?", (id,))
             conn.commit()
             return cursor.rowcount
-
