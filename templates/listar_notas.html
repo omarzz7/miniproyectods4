@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Listar Notas{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <h2 class="mb-4 text-center text-primary">Lista de notas</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                    {% if category == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if notas %}
+        <ul class="list-group">
+            {% for nota in notas %}
+            <li class="list-group-item d-flex justify-content-between align-items-center mb-2 shadow-sm rounded">
+
+                <span class="fw-bold">{{ nota.titulo }}</span>
+                
+
+                <div>
+
+                    <a href="{{ url_for('modificar_nota', id=nota.id) }}" class="btn btn-sm btn-primary me-2">Modificar</a>
+                    
+
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ nota.id }}">
+                        Eliminar
+                    </button>
+                </div>
+            </li>
+
+
+            <div class="modal fade" id="deleteModal{{ nota.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ nota.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel{{ nota.id }}">Confirmar Eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Eliminar la nota: <span class="fw-bold">"{{ nota.titulo }}"</span>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                            <a href="{{ url_for('eliminar_nota', id=nota.id) }}" class="btn btn-danger">Aceptar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            No hay notas creadas. ¡Crea una ahora!
+        </div>
+        <div class="text-center">
+            <a href="{{ url_for('crear_nota') }}" class="btn btn-success mt-3">Crear Nueva Nota</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
