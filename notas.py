@@ -45,7 +45,7 @@ class ManejadorDeNotas:
             filas = cursor.fetchall()
             return [Nota(id=f[0], titulo=f[1], contenido=f[2]) for f in filas]
 
-    # Y en este solo las de un ID
+    # Y en este solo las de un id
     def leer_nota(self, id):
         with self._conectar() as conn:
             cursor = conn.cursor()
